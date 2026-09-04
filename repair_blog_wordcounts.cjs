@@ -1,0 +1,7 @@
+const fs = require('node:fs');
+const p = `${__dirname}/public/blog-posts/index.json`;
+const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+const slugs = new Set(['chat-online-para-conhecer-pessoas-com-os-mesmos-valores','bate-papo-online-para-quem-nao-sabe-o-que-dizer','chat-online-para-encontrar-companhia-em-dias-dificeis']);
+const extra = '<h2>Uma conversa por vez</h2><p>Também vale lembrar que cada pessoa chega ao chat em um momento diferente. Alguém pode estar procurando distração, outro pode querer trocar uma recomendação e outro apenas observar antes de participar. Essa variedade é parte da experiência. Não transforme cada interação em uma prova de compatibilidade ou em uma promessa de amizade. Dê atenção ao que está acontecendo agora, responda com respeito e permita que a conversa encontre seu próprio ritmo. Se não houver sintonia, agradeça e tente novamente mais tarde. Há muitas formas de participar: uma pergunta, uma história curta, uma opinião cuidadosa ou simplesmente uma mensagem de incentivo. Pequenos gestos repetidos tornam o ambiente mais acolhedor para todos.</p>';
+for (const x of d) if (slugs.has(x.slug)) { x.content = x.content.replace('</p><p><strong>Experimente o Disque Amizade</strong>', `${extra}</p><p><strong>Experimente o Disque Amizade</strong>`); x.wordCount = x.content.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length; }
+fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
