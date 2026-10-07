@@ -1,0 +1,16 @@
+const fs = require('fs');
+const root = require('path').resolve(__dirname, '..');
+const slug = 'chat-online-vitoria-sem-cadastro-conversar-agora';
+const indexPath = root + '/public/blog-posts/index.json';
+const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+if (index.some(x => x.slug === slug)) throw new Error('duplicate slug');
+const content = fs.readFileSync(root + '/public/blog-posts/' + slug + '.html', 'utf8');
+const wordCount = content.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+index.push({slug, title:'Chat Online em Vitória sem Cadastro: Como Conversar Agora', excerpt:'Veja como entrar em um chat online em Vitória sem cadastro, encontrar pessoas do Espírito Santo e começar a conversar agora com privacidade.', category:'cidades', tags:['chat online Vitória','chat sem cadastro','bate papo Vitória','chat grátis sem cadastro','conversar agora'], author:'Disque Amizade', date:'2026-10-08', readTime:Math.max(5, Math.round(wordCount/155)), image:'/blog-images/chat-online-vitoria-espirito-santo.png', coverImage:'/blog-images/chat-online-vitoria-espirito-santo.png', wordCount, lastModified:'2026-10-08', relatedSlugs:['chat-online-belem-sem-cadastro-conversar-agora','chat-por-cidade-brasil-encontre-pessoas','chat-sem-cadastro-no-celular-como-entrar-agora'], content});
+fs.writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n');
+const sitemapPath = root + '/public/sitemap.xml';
+let sitemap = fs.readFileSync(sitemapPath, 'utf8');
+const url = `https://disqueamizade.com.br/blog/${slug}`;
+if (!sitemap.includes(`<loc>${url}</loc>`)) sitemap = sitemap.replace('</urlset>', `  <url>\n    <loc>${url}</loc>\n    <lastmod>2026-10-08</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>`);
+fs.writeFileSync(sitemapPath, sitemap);
+console.log(JSON.stringify({slug, wordCount}));
