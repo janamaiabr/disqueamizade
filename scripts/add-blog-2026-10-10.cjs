@@ -1,0 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const slug = 'chat-online-fortaleza-sem-cadastro-conversar-agora';
+const indexPath = path.join(root, 'public/blog-posts/index.json');
+const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+if (index.some(x => x.slug === slug)) throw new Error('duplicate slug');
+const content = fs.readFileSync(path.join(root, 'public/blog-posts', `${slug}.html`), 'utf8');
+const wordCount = content.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+index.push({slug, title:'Chat Online em Fortaleza sem Cadastro: Como Conversar Agora', excerpt:'Veja como entrar em um chat online em Fortaleza sem cadastro, encontrar pessoas do Ceará e começar a conversar agora com privacidade.', category:'cidades', tags:['chat online Fortaleza','chat sem cadastro','bate papo Fortaleza','chat grátis sem cadastro','conversar agora'], author:'Disque Amizade', date:'2026-10-10', readTime:Math.max(5, Math.round(wordCount / 155)), image:'/blog-images/chat-online-fortaleza-ceara.png', coverImage:'/blog-images/chat-online-fortaleza-ceara.png', wordCount, lastModified:'2026-10-10', relatedSlugs:['chat-online-sao-paulo-sem-cadastro-conversar-agora','chat-online-recife-sem-cadastro-conversar-agora','chat-por-cidade-brasil-encontre-pessoas'] , content});
+fs.writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n');
+console.log(JSON.stringify({slug, wordCount}));
