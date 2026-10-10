@@ -1,0 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const slug = 'chat-online-rio-de-janeiro-sem-cadastro-conversar-agora';
+const indexPath = path.join(root, 'public/blog-posts/index.json');
+const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+if (index.some(x => x.slug === slug)) throw new Error('duplicate slug');
+const content = fs.readFileSync(path.join(root, 'public/blog-posts', `${slug}.html`), 'utf8');
+const wordCount = content.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+index.push({ slug, title: 'Chat Online no Rio de Janeiro sem Cadastro: Como Conversar Agora', excerpt: 'Veja como entrar em um chat online no Rio de Janeiro sem cadastro, conversar com pessoas da região e proteger sua privacidade.', category: 'cidades', tags: ['chat online Rio de Janeiro', 'chat sem cadastro', 'bate papo Rio de Janeiro', 'chat grátis sem cadastro', 'conversar agora'], author: 'Disque Amizade', date: '2026-10-11', readTime: Math.max(5, Math.round(wordCount / 155)), image: '/blog-images/chat-online-rio-de-janeiro-cariocas.png', coverImage: '/blog-images/chat-online-rio-de-janeiro-cariocas.png', wordCount, lastModified: '2026-10-11', relatedSlugs: ['chat-online-sao-paulo-sem-cadastro-conversar-agora', 'chat-online-belo-horizonte-sem-cadastro-conversar-agora', 'chat-online-por-estado-brasil-conhecer-gente-todas-regioes'] , content });
+fs.writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n');
+console.log(JSON.stringify({ slug, wordCount }));
