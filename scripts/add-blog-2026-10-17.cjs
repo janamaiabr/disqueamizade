@@ -1,0 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const slug = 'chat-online-teresina-sem-cadastro-conversar-agora';
+const indexPath = path.join(root, 'public/blog-posts/index.json');
+const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+if (index.some(x => x.slug === slug)) throw new Error('duplicate slug');
+const content = fs.readFileSync(path.join(root, 'public/blog-posts', `${slug}.html`), 'utf8');
+const wordCount = content.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+index.push({ slug, title: 'Chat Online em Teresina sem Cadastro: Como Conversar Agora', excerpt: 'Veja como entrar em um chat online em Teresina sem cadastro, conversar com pessoas do Piauí e proteger sua privacidade.', category: 'cidades', tags: ['chat online Teresina', 'chat sem cadastro', 'bate papo Teresina', 'chat grátis sem cadastro', 'conversar agora'], author: 'Disque Amizade', date: '2026-10-17', readTime: Math.max(5, Math.round(wordCount / 155)), image: '/blog-images/salas-de-chat-por-cidade-brasil.png', coverImage: '/blog-images/salas-de-chat-por-cidade-brasil.png', wordCount, lastModified: '2026-10-17', relatedSlugs: ['chat-online-sao-luis-sem-cadastro-conversar-agora', 'chat-online-manaus-sem-cadastro-conversar-agora', 'chat-online-por-estado-brasil-conhecer-gente-todas-regioes'], content });
+fs.writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n');
+console.log(JSON.stringify({ slug, wordCount }));
