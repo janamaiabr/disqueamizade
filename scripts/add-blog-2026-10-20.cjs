@@ -1,0 +1,13 @@
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const slug = 'chat-gratis-sem-cadastro-como-comecar-agora';
+const title = 'Chat Grátis sem Cadastro: Como Começar a Conversar Agora';
+const indexPath = path.join(root, 'public/blog-posts/index.json');
+const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+if (index.some(x => x.slug === slug)) throw new Error('duplicate slug');
+const content = fs.readFileSync(path.join(root, 'public/blog-posts', `${slug}.html`), 'utf8');
+const wordCount = content.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+index.push({slug, title, excerpt: 'Veja como entrar em um chat grátis sem cadastro, começar uma conversa agora e proteger sua privacidade sem confundir acesso rápido com anonimato absoluto.', category: 'guias', tags: ['chat grátis sem cadastro', 'chat sem cadastro', 'bate papo sem cadastro', 'conversar agora', 'chat anônimo seguro'], author: 'Disque Amizade', date: '2026-10-20', readTime: Math.max(5, Math.round(wordCount / 155)), image: '/blog-images/salas-de-chat-por-cidade-brasil.png', coverImage: '/blog-images/salas-de-chat-por-cidade-brasil.png', wordCount, lastModified: '2026-10-20', relatedSlugs: ['chat-anonimo-sem-cadastro-proteger-privacidade', 'chat-de-voz-gratis-sem-cadastro-como-conversar', 'chat-online-navegador-sem-cadastro-como-conversar'] , content});
+fs.writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n');
+console.log(JSON.stringify({slug, wordCount}));
